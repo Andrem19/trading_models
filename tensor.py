@@ -5,7 +5,7 @@ from sklearn.preprocessing import LabelEncoder
 import tensorflow as tf
 
 # Read the data from CSV
-data = pd.read_csv('data/combined_patterns.csv')
+data = pd.read_csv('finaly/training_data.csv')
 
 # Preprocess the string data
 for column in data.columns:

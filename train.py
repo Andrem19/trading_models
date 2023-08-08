@@ -5,7 +5,7 @@ from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import GridSearchCV
 
 # Read the data from CSV file
-data = pd.read_csv('data/combined_patterns.csv')
+data = pd.read_csv('finaly/training_data.csv')
 
 # Preprocess the string data
 for column in data.columns:
