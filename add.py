@@ -1,14 +1,14 @@
 import os
 import csv
 
-path = 'cases'
+path = 'cases5'
 target_path = 'finaly'
 
 # Get all CSV files in the specified path
 csv_files = [file for file in os.listdir(path) if file.endswith('.csv')]
 
 # Create the output file in the target path
-output_file = os.path.join(target_path, 'training_data.csv')
+output_file = os.path.join(target_path, 'training_data5.csv')
 
 # Iterate over each CSV file and write its data into the output file
 with open(output_file, 'w', newline='') as outfile:
@@ -19,6 +19,9 @@ with open(output_file, 'w', newline='') as outfile:
 
         with open(file_path, 'r') as infile:
             reader = csv.reader(infile)
+
+            # Skip the first row (header) of each CSV file
+            next(reader)
 
             for row in reader:
                 writer.writerow(row)

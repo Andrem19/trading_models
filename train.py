@@ -3,9 +3,10 @@ from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import GridSearchCV
+import pickle
 
 # Read the data from CSV file
-data = pd.read_csv('finaly/training_data.csv')
+data = pd.read_csv('finaly/training_data2.csv')
 
 # Preprocess the string data
 for column in data.columns:
@@ -38,6 +39,10 @@ model = LogisticRegression(**best_params)
 
 # Train the logistic regression model
 model.fit(X_train, y_train)
+
+filename = 'models/trained_model4.pkl'
+with open(filename, 'wb') as file:
+    pickle.dump(model, file)
 
 # Evaluate the model
 accuracy = model.score(X_test, y_test)

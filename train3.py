@@ -3,13 +3,15 @@ from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import GridSearchCV
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, confusion_matrix, roc_curve, roc_auc_score
+import matplotlib.pyplot as plt
 import pickle
 
-
 # Read the data from CSV file
-data = pd.read_csv('finaly/training_data.csv')
-#Example data in csv file: Header = 0,1,2,3,4,5,6,7,8,9,type Data = "[-0.0, 0.04, 0.01, 0.01, 2.08]","[0.01, -0.01, 0.01, 0.01, -0.17]","[0.01, -0.01, -0.01, -0.0, 0.27]","[-0.0, 0, -0.02, -0.04, 0.12]","[-0.03, -0.03, -0.03, -0.02, 0.47]","[-0.02, -0.02, 0.0, -0.02, -0.41]","[-0.02, -0.01, -0.02, -0.01, -0.26]","[-0.01, 0.01, 0.01, 0.02, -0.19]","[0.02, -0.0, 0.02, 0.01, 0.08]","[0.01, 0.01, 0.01, 0.01, -0.13]",0
-# Preprocess the string data
+data = pd.read_csv('finaly/training_data2.csv')
+
+# Preprocess the data (handle missing values, outliers, scaling)
+# Add your preprocessing code here
 for column in data.columns:
     if data.dtypes[column] == 'object':
         le = LabelEncoder()
@@ -28,7 +30,7 @@ param_grid = {'n_estimators': [100, 200, 300], 'max_depth': [3, 5, 7]}
 # Create the random forest model
 model = RandomForestClassifier()
 
-# Perform grid search
+# Perform grid search for hyperparameter tuning
 grid_search = GridSearchCV(model, param_grid, cv=5)
 grid_search.fit(X_train, y_train)
 
@@ -41,11 +43,34 @@ model = RandomForestClassifier(**best_params)
 # Train the random forest model
 model.fit(X_train, y_train)
 
-# Save the model to a file in the "models" folder
-filename = 'models/trained_model.pkl'
+# Save the model to a file
+filename = 'models/trained_model5.pkl'
 with open(filename, 'wb') as file:
     pickle.dump(model, file)
 
 # Evaluate the model
-accuracy = model.score(X_test, y_test)
+y_pred = model.predict(X_test)
+accuracy = accuracy_score(y_test, y_pred)
+precision = precision_score(y_test, y_pred)
+recall = recall_score(y_test, y_pred)
+f1 = f1_score(y_test, y_pred)
+confusion = confusion_matrix(y_test, y_pred)
+roc_auc = roc_auc_score(y_test, y_pred)
+
 print("Model accuracy:", accuracy)
+print("Model precision:", precision)
+print("Model recall:", recall)
+print("Model F1-score:", f1)
+print("Confusion matrix:\n", confusion)
+print("ROC AUC score:", roc_auc)
+
+# Plot ROC curve
+y_pred_proba = model.predict_proba(X_test)[:, 1]
+fpr, tpr, thresholds = roc_curve(y_test, y_pred_proba)
+plt.plot(fpr, tpr)
+plt.xlabel('False Positive Rate')
+plt.ylabel('True Positive Rate')
+plt.title('Receiver Operating Characteristic')
+plt.show()
+
+

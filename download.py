@@ -11,7 +11,7 @@ def main():
             path_dir_where_to_dump="newdata",
             asset_class="spot",  # spot, um, cm
             data_type="klines",  # aggTrades, klines, trades
-            data_frequency="15m",
+            data_frequency="5m",
         )
         data_dumper.dump_data(
             tickers=symbol,

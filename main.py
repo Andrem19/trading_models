@@ -1,4 +1,4 @@
-import getdata
+import helpers.getdata as getdata
 import pandas as pd
 from sklearn.linear_model import LinearRegression
 import numpy as np
