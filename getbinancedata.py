@@ -33,14 +33,14 @@ def get_last_12_candles(symbol, interval):
         cut_candles.append([float(open), float(high), float(low), float(close), float(volume)])
     
     return rel.convert_to_relative2(cut_candles[1:], cut_candles[0], 3)
-
+model = tr.train_model()
 # Main loop to fetch candles every 15 minutes
 while True:
     for c in coins:
         candles = get_last_12_candles(c, Client.KLINE_INTERVAL_5MINUTE)
         print(candles)
         # pr.pred(candles)
-        tr.train(candles[:-5], c)
+        tr.train(model, candles[:-5], c)
         # p.pred2(candles[:-5])
     # Sleep for 15 minutes (900 seconds)
     time.sleep(300)

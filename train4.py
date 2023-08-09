@@ -5,7 +5,7 @@ from sklearn.linear_model import LogisticRegression
 import pickle
 import numpy as np
 import telegram as tg
-def train(res_data, coin):
+def train_model():
     # # Load the training data from 'finaly/training_data2.csv'
     data = pd.read_csv('finaly/training_data5.csv')
 
@@ -27,13 +27,29 @@ def train(res_data, coin):
     # y_test_encoded = label_encoder.transform(y_test)
 
     # # Train a logistic regression model
-    model = LogisticRegression()
+    model = LogisticRegression(max_iter=1000)
     model.fit(X_train, y_train)
 
     # # Evaluate the model
     accuracy = model.score(X_test, y_test)
     print("Accuracy:", accuracy)
-    
+    return model
+
+def train(model, res_data, coin):
+    # # Load the training data from 'finaly/training_data2.csv'
+    data = pd.read_csv('finaly/training_data5.csv')
+
+    # # Separate the features (X) and the target variable (y)
+    X = data.iloc[:, :-1].values
+    y = data.iloc[:, -1].values
+
+    # # Split the data into training and test sets
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+    # # Standardize the features
+    scaler = StandardScaler()
+    X_train = scaler.fit_transform(X_train)
+    X_test = scaler.transform(X_test)
     # Save the model to a file
     model_filename = 'models/trained_model7.pkl'
     with open(model_filename, 'wb') as file:
